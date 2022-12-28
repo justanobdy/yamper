@@ -4,6 +4,7 @@ rmdir /s /q temp
 rmdir /s /q libs
 
 mkdir libs\
+mkdir libs\nlohmann
 
 echo Downloading simpleini...
 git clone -q https://github.com/brofield/simpleini.git temp
@@ -53,3 +54,9 @@ rename libs\imconfig-SFML.h imconfig.h
 
 echo Cleaning up...
 rmdir /s /q temp
+
+echo Downloading nlohmann/json...
+curl -OL https://github.com/nlohmann/json/releases/download/v3.11.2/json.hpp
+move json.hpp libs\nlohmann
+
+echo Done!

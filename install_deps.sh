@@ -1,6 +1,7 @@
 rm -rf temp
 
 mkdir libs
+mkdir libs/nlohmann
 
 echo Downloading simpleini...
 git clone https://github.com/brofield/simpleini.git temp &> /dev/null
@@ -46,6 +47,11 @@ cp temp/imgui-SFML.cpp libs/imgui-SFML.cpp
 cp temp/imgui-SFML.h libs/imgui-SFML.h
 cp temp/imgui-SFML_export.h libs/imgui-SFML_export.h
 cp temp/imconfig-SFML.h libs/imconfig.h
+
+echo Downloading nlohmann/json...
+curl -OL https://github.com/nlohmann/json/releases/download/v3.11.2/json.hpp
+cp json.hpp libs/nlohmann/json.hpp
+rm json.hpp
 
 echo Cleaning up...
 rm -rf temp
