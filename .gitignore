@@ -2,3 +2,5 @@
 doxygen/
 build/
 libs/
+.vs/
+CMakeSettings.json

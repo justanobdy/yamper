@@ -9,10 +9,20 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp libs/*.cpp)
 
 add_executable(yamper ${SRC_FILES})
 
-find_package(SFML 2.5.1 COMPONENTS graphics audio REQUIRED)
+option(LINK_OPENGL ON)
 
-target_link_libraries(yamper PUBLIC sfml-graphics sfml-audio)
+find_package(SFML 2.5.1 COMPONENTS graphics audio REQUIRED)
+if(LINK_OPENGL)
+	find_package(OpenGL REQUIRED)
+endif()
+
+target_link_libraries(yamper PRIVATE sfml-graphics sfml-audio)
 
 target_include_directories(yamper PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/libs)
+
+if(LINK_OPENGL)
+	target_link_libraries(yamper PUBLIC ${OPENGL_LIBRARIES})
+	target_include_directories(yamper PUBLIC ${OPENGL_INCLUDE_DIRS})
+endif()
 
 configure_file(res/Roboto-Medium.ttf Roboto-Medium.ttf COPYONLY)
