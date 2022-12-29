@@ -38,13 +38,13 @@ Widgets::ContextResult Widgets::AddContext(SongManager::Reference Song, Playlist
     App& app = App::Get();
 
     if(imgui::BeginPopupContextItem()) {
-        //if(imgui::MenuItem("Remove song")) {
-        //    result = DeleteSong;
-        //
-        //    SongManager::Get().Remove(Song);
-        //
-        //    SongManager::Get().SerializeToFile("songs.json");
-        //}
+        if(imgui::MenuItem("Delete song")) {
+            result = DeleteSong;
+        
+            SongManager::Get().Remove(Song);
+        
+            SongManager::Get().SerializeToFile("songs.json");
+        }
         if(imgui::MenuItem("Edit Song")) {
             app.gui.AddWindow<EditSong>(Song);
         }
@@ -119,6 +119,8 @@ void Widgets::DisplaySong(SongManager::Reference Song, size_t Index, Playlist& C
 
     const float imageSize = 100;
 
+    Widgets::ContextResult result;
+
     // Only display an image if it is loaded
     if(Song.Get().GetIcon().IsLoaded()) {
         // Display the image
@@ -145,7 +147,12 @@ void Widgets::DisplaySong(SongManager::Reference Song, size_t Index, Playlist& C
     }
 
     // Add the context menu to the selectable
-    AddContext(Song, CurrentPlaylist);
+    result = AddContext(Song, CurrentPlaylist);
+
+    // Stop the function if the song was deleted
+    if (result == DeleteSong) {
+        return;
+    }
 
     // If an icon is loaded, make sure the the artist name is lined up with the icon
     if(Song.Get().GetIcon().IsLoaded())
